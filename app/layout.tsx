@@ -8,6 +8,7 @@ import { ConvexClientProvider } from "./convex/providers";
 import ReduxProvider from "@/redux/provider";
 import { ConvexUserRaw, normalizeProfile } from "@/types/user";
 import { ProfileQuery } from "@/convex/query.config";
+import { preloadedQueryResult } from "convex/nextjs";
 
 const outfit = Outfit({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -24,9 +25,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const rawProfile = await ProfileQuery();
-  const profile = normalizeProfile(
-    rawProfile._valueJSON as unknown as ConvexUserRaw | null,
-  );
+  const user = preloadedQueryResult(rawProfile);
+  const profile = normalizeProfile(user as ConvexUserRaw | null);
+
   return (
     <html suppressHydrationWarning lang="en">
       <body className={`${outfit.className} antialiased`}>
