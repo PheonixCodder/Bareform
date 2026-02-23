@@ -29,7 +29,9 @@ export const Navbar = () => {
     api.projects.getProject,
     projectId ? { projectId: projectId as Id<"projects"> } : "skip",
   );
-
+  if (!me) {
+    return null;
+  }
   const tabs: TabProps[] = [
     {
       label: "Canvas",
