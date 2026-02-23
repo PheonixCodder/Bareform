@@ -78,7 +78,7 @@ export const useAuth = () => {
     try {
       await signOut(); // Clears user session and tokens
       toast.success("Signed out successfully");
-      router.push("/auth");
+      router.push("/login");
     } catch (error) {
       toast.error("Error signing out");
     } finally {

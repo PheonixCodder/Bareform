@@ -37,7 +37,7 @@ const SignUp = () => {
 
           <div className="mt-6 space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="lastName" className="text-sm">
+              <Label htmlFor="name" className="text-sm">
                 Name
               </Label>
               <Input

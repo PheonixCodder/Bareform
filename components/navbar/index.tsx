@@ -33,12 +33,12 @@ export const Navbar = () => {
   const tabs: TabProps[] = [
     {
       label: "Canvas",
-      href: `/dashboard//canvas?project=${projectId}`,
+      href: `/dashboard/${me.name}/canvas?project=${projectId}`,
       icon: <Hash className="h-4 w-4" />,
     },
     {
       label: "Style Guide",
-      href: `/dashboard//style-guide?project=${projectId}`,
+      href: `/dashboard/${me.name}/style-guide?project=${projectId}`,
       icon: <LayoutTemplate className="h-4 w-4" />,
     },
   ];
@@ -100,7 +100,7 @@ export const Navbar = () => {
           <CircleQuestionMark className="size-5 text-white" />
         </Button>
         <Avatar className="size-10">
-          <AvatarImage src={me.image || ''} />
+          <AvatarImage src={me.image || ""} />
           <AvatarFallback>
             <User className="size-5 text-black" />
           </AvatarFallback>

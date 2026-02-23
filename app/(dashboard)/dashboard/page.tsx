@@ -1,14 +1,15 @@
 import { SubscriptionEntitlementQuery } from "@/convex/query.config";
-import { combinedSlug } from "@/lib/utils";
 import { redirect } from "next/navigation";
-import React from "react";
 
 const Dashboard = async () => {
   const { entitlement, profileName } = await SubscriptionEntitlementQuery();
-  if (!entitlement._valueJSON) {
-    redirect(`/billing/${combinedSlug(profileName!)}`);
+  if (!profileName) {
+    redirect("/login");
   }
-  redirect(`/dashboard/${combinedSlug(profileName!)}`);
+  if (!entitlement._valueJSON) {
+    redirect(`/billing/${profileName}`);
+  }
+  redirect(`/dashboard/${profileName}`);
 };
 
 export default Dashboard;
