@@ -66,7 +66,7 @@ const projectsSlice = createSlice({
     },
     addProject: (state, action: PayloadAction<ProjectSummary>) => {
       state.projects.unshift(action.payload);
-      state.total = +1;
+      state.total += 1;
     },
     updateProject: (state, action: PayloadAction<ProjectSummary>) => {
       const index = state.projects.findIndex(
@@ -78,7 +78,10 @@ const projectsSlice = createSlice({
     },
     removeProject: (state, action: PayloadAction<string>) => {
       state.projects = state.projects.filter((p) => p._id !== action.payload);
-      state.total = Math.max(0, state.total - 1);
+      const prevLength = state.projects.length;
+      if (state.projects.length < prevLength) {
+        state.total = Math.max(0, state.total - 1);
+      }
     },
     clearProjects: (state) => {
       state.projects = [];
