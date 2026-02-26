@@ -104,23 +104,6 @@ const SignUp = () => {
               )}
             </Button>
           </div>
-
-          <div className="my-6 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-            <hr className="border-dashed" />
-            <span className="text-muted-foreground text-xs">
-              Or sign up with
-            </span>
-            <hr className="border-dashed" />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <Button type="button" variant="outline">
-              Google
-            </Button>
-            <Button type="button" variant="outline">
-              Microsoft
-            </Button>
-          </div>
         </div>
 
         <div className="p-3">
