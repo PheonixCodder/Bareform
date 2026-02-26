@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/store";
+import { CreateProject } from "../buttons/project";
 
 type TabProps = {
   label: string;
@@ -63,7 +64,7 @@ export const Navbar = () => {
       </div>
 
       {/* Middle: Navigation Tabs */}
-      <div className="flex items-center justify-center">
+      <div className="hidden items-center justify-center md:flex">
         <div className="flex items-center gap-1 bg-secondary/50 p-1 rounded-4xl border border-border">
           {tabs.map((tab) => {
             const isActive = pathname.includes(
@@ -92,7 +93,7 @@ export const Navbar = () => {
 
       {/* Right: Actions */}
       <div className="flex items-center gap-3 justify-end">
-        <span className="text-xs text-white/40 hidden md:inline">
+        <span className="text-xs text-white/40 inline">
           TODO: credits
         </span>
         <Button
@@ -104,9 +105,10 @@ export const Navbar = () => {
         <Avatar className="size-10">
           <AvatarImage src={me.image || ""} />
           <AvatarFallback>
-            <User className="size-5 text-black" />
+            <User className="size-5 text-white" />
           </AvatarFallback>
         </Avatar>
+        <CreateProject />
       </div>
     </div>
   );
