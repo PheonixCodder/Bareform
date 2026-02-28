@@ -6,7 +6,7 @@ const Dashboard = async () => {
   if (!profileName) {
     redirect("/login");
   }
-  if (!entitlement._valueJSON) {
+  if (entitlement._valueJSON) {
     redirect(`/billing/${profileName}`);
   }
   redirect(`/dashboard/${profileName}`);
