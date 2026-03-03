@@ -50,6 +50,8 @@ const generateGradientThumbnail = () => {
 
 export const useProjectCreation = () => {
   const dispatch = useAppDispatch();
+  const createProjectMutation = useMutation(api.projects.createProject);
+
   const user = useAppSelector((state) => state.profile);
   const projectsState = useAppSelector((state) => state.projects);
   const shapesState = useAppSelector((state) => state.shapes);
@@ -62,7 +64,7 @@ export const useProjectCreation = () => {
     dispatch(createProjectStart());
     try {
       const thumbnail = generateGradientThumbnail();
-      const result = await fetchMutation(api.projects.createProject, {
+      const result = await createProjectMutation({
         userId: user.id as Id<"users">,
         name: name || undefined,
         sketchesData: {

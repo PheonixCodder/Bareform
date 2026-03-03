@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { MutationCtx } from "./_generated/server";
-import { Id } from "./_generated/dataModel";
+import { DataModel, Id } from "./_generated/dataModel";
 
 export const getProject = query({
   args: { projectId: v.id("projects") },
@@ -29,7 +29,9 @@ export const createProject = mutation({
     sketchesData: v.any(), // JSON structure from Redux shapes state
     thumbnail: v.optional(v.string()),
   },
-  handler: async (ctx, { userId, name, sketchesData, thumbnail }) => {
+  handler: async (ctx, { name, sketchesData, thumbnail }) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
     console.log("🚀 [Convex] Creating project for user:", userId);
 
     const projectNumber = await getNextProjectNumber(ctx, userId);
@@ -89,13 +91,16 @@ export const getUserProjects = query({
     limit: v.optional(v.number()),
   },
   handler: async (ctx, { userId, limit = 20 }) => {
-    const allProjects = await ctx.db
+    const authUserId = await getAuthUserId(ctx);
+    if (!authUserId) throw new Error("Not authenticated");
+    if (authUserId !== userId) throw new Error("Access denied");
+
+    const projects = await ctx.db
       .query("projects")
       .withIndex("by_userId", (q) => q.eq("userId", userId))
       .order("desc")
-      .collect();
+      .take(limit);
 
-    const projects = allProjects.slice(0, limit);
 
     return projects.map((project) => ({
       _id: project._id,
@@ -125,5 +130,61 @@ export const getProjectStyleGuide = query({
 
     // Return parsed style guide data or null
     return project.styleGuide ? JSON.parse(project.styleGuide) : null;
+  },
+});
+
+export const updateProjectSketches = mutation({
+  args: {
+    projectId: v.id("projects"),
+    sketchesData: v.any(),
+    viewportData: v.optional(v.any()),
+  },
+  handler: async (ctx, { projectId, sketchesData, viewportData }) => {
+    const project = await ctx.db.get(projectId);
+    if (!project) throw new Error("Project not found");
+
+    const updateData: Pick<
+      DataModel["projects"]["document"],
+      "sketchesData" | "lastModified" | "viewportData"
+    > = {
+      sketchesData,
+      lastModified: Date.now(),
+    };
+
+    if (viewportData) {
+      updateData.viewportData = viewportData;
+    }
+
+    await ctx.db.patch(projectId, updateData);
+
+    return { success: true };
+  },
+});
+
+export const updateProjectStyleGuide = mutation({
+  args: {
+    projectId: v.id("projects"),
+    styleGuideData: v.any(), // JSON structure for AI-generated style guide
+  },
+  handler: async (ctx, { projectId, styleGuideData }) => {
+    console.log("📝 [Convex] Updating project style guide", { projectId });
+    const userId = await getAuthUserId(ctx);
+
+    if (!userId) throw new Error("Not authenticated");
+
+    const project = await ctx.db.get(projectId);
+
+    if (!project) throw new Error("Project not found");
+    if (project.userId !== userId) {
+      throw new Error("Access denied");
+    }
+
+    await ctx.db.patch(projectId, {
+      styleGuide: JSON.stringify(styleGuideData), // Store as JSON string
+      lastModified: Date.now(),
+    });
+
+    console.log("✅ [Convex] Project style guide updated successfully");
+    return { success: true, styleGuide: styleGuideData };
   },
 });

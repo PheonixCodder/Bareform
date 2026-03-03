@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface AutosaveProjectRequest {
   projectId: string;
@@ -21,7 +21,7 @@ interface AutosaveProjectResponse {
   eventId: string;
 }
 
-export const ProjectsApi = createApi({
+export const ProjectApi = createApi({
   reducerPath: "projectApi",
   baseQuery: fetchBaseQuery({ baseUrl: "/api/project" }),
   tagTypes: ["Project"],
@@ -38,3 +38,5 @@ export const ProjectsApi = createApi({
     }),
   }),
 });
+
+export const { useAutosaveProjectMutation } = ProjectApi;
