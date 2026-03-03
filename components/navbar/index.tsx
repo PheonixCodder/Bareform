@@ -32,9 +32,10 @@ export const Navbar = () => {
     projectId ? { projectId: projectId as Id<"projects"> } : "skip",
   );
 
-  const creditBalance = useQuery(api.subscription.getCreditsBalance, {
-    userId: me.id as Id<"users">,
-  });
+  const creditBalance = useQuery(
+    api.subscription.getCreditsBalance,
+    me ? { userId: me.id as Id<"users"> } : "skip",
+  );
 
   if (!me) {
     return null;
@@ -99,7 +100,9 @@ export const Navbar = () => {
 
       {/* Right: Actions */}
       <div className="flex items-center gap-3 justify-end">
-        <span className="text-xs text-white/40 inline">{creditBalance} credits</span>
+        <span className="text-xs text-white/40 inline">
+          {creditBalance} credits
+        </span>
         <Button
           variant="secondary"
           className="rounded-full size-10 flex items-center justify-center backdrop-blur-xl bg-white/8 border border-white/12 hover:bg-white/12"

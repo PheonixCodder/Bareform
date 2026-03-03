@@ -225,7 +225,7 @@ export const handlePolarEvent = inngest.createFunction(
     const idk = grantKey(polarSubscriptionId, currentPeriodEnd, incoming.id);
     if (
       entitled &&
-      (looksCreate || looksRenew || true) /* allow on first known period */
+      (looksCreate || looksRenew) /* allow on first known period */
     ) {
       const grant = await step.run("grant-credits", async () => {
         try {
