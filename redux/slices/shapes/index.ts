@@ -162,7 +162,7 @@ const makeRect = (p: {
   h: p.h,
   stroke: p.stroke ?? DEFAULTS.stroke,
   strokeWidth: p.strokeWidth ?? DEFAULTS.strokeWidth,
-  fill: p.fill ?? null,
+  fill: p.fill ?? "transparent",
 });
 
 const makeEllipse = (p: {
@@ -182,7 +182,7 @@ const makeEllipse = (p: {
   h: p.h,
   stroke: p.stroke ?? DEFAULTS.stroke,
   strokeWidth: p.strokeWidth ?? DEFAULTS.strokeWidth,
-  fill: p.fill ?? null,
+  fill: p.fill ?? "transparent",
 });
 
 const makeFree = (p: {
@@ -196,7 +196,7 @@ const makeFree = (p: {
   points: p.points,
   stroke: p.stroke ?? DEFAULTS.stroke,
   strokeWidth: p.strokeWidth ?? DEFAULTS.strokeWidth,
-  fill: p.fill ?? null,
+  fill: p.fill ?? "transparent",
 });
 
 const makeArrow = (p: {
@@ -216,7 +216,7 @@ const makeArrow = (p: {
   endY: p.endY,
   stroke: p.stroke ?? DEFAULTS.stroke,
   strokeWidth: p.strokeWidth ?? DEFAULTS.strokeWidth,
-  fill: p.fill ?? null,
+  fill: p.fill ?? "transparent",
 });
 
 const makeLine = (p: {
@@ -236,7 +236,7 @@ const makeLine = (p: {
   endY: p.endY,
   stroke: p.stroke ?? DEFAULTS.stroke,
   strokeWidth: p.strokeWidth ?? DEFAULTS.strokeWidth,
-  fill: p.fill ?? null,
+  fill: p.fill ?? "transparent",
 });
 
 const makeText = (p: {
@@ -299,7 +299,7 @@ const makeGeneratedUI = (p: {
   isWorkflowPage: p.isWorkflowPage,
   stroke: "transparent", // No border for generated UI
   strokeWidth: 0,
-  fill: p.fill ?? null,
+  fill: p.fill ?? "transparent",
 });
 
 const shapesSlice = createSlice({

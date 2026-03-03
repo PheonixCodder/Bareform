@@ -59,7 +59,7 @@ const ImagesBoard = ({
   return (
     <>
       <div
-        key={"board-${image.id}"}
+        key={`board-${image.id}`}
         className="absolute group"
         style={{
           transform: `translate(${xOffset}px, ${yOffset}px) rotate(${rotation}deg)`,
