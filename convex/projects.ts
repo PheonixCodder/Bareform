@@ -101,7 +101,6 @@ export const getUserProjects = query({
       .order("desc")
       .take(limit);
 
-
     return projects.map((project) => ({
       _id: project._id,
       name: project.name,
@@ -140,8 +139,12 @@ export const updateProjectSketches = mutation({
     viewportData: v.optional(v.any()),
   },
   handler: async (ctx, { projectId, sketchesData, viewportData }) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
+
     const project = await ctx.db.get(projectId);
     if (!project) throw new Error("Project not found");
+    if (project.userId !== userId) throw new Error("Access denied");
 
     const updateData: Pick<
       DataModel["projects"]["document"],

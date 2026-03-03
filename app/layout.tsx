@@ -29,7 +29,7 @@ export default async function RootLayout({
   const profile = normalizeProfile(user as ConvexUserRaw | null);
 
   return (
-    <html suppressHydrationWarning lang="en">
+    <html suppressHydrationWarning lang="en" className="bg-background">
       <body className={`${outfit.className} antialiased`}>
         <ConvexAuthNextjsServerProvider>
           <ConvexClientProvider>

@@ -10,7 +10,7 @@ export const generationApi = createApi({
     // Generate generation
     generateGeneration: builder.mutation({
       query: (data) => ({
-        url: "/generate",
+        url: "",
         method: "POST",
         body: data,
       }),

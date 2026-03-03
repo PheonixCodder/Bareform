@@ -73,7 +73,7 @@ const ProjectsList = () => {
                     {project.name}
                   </h3>
                   <p className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">
-                    Edited
+                    Edited{"  "}
                     {formatDistanceToNow(new Date(project.lastModified), {
                       addSuffix: true,
                     })}

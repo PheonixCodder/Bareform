@@ -26,6 +26,9 @@ export const getInspirationImages = query({
       storageIds.map(async (storageId, index) => {
         try {
           const url = await ctx.storage.getUrl(storageId);
+          if (!url) {
+            return null;
+          }
           return {
             id: `inspiration-${storageId}`, // Unique ID for client-side tracking
             storageId,
@@ -129,11 +132,11 @@ export const removeInspirationImage = mutation({
     }
 
     const currentImages = project.inspirationImages || [];
+    if (!currentImages.includes(storageId)) {
+      throw new Error("Image not attached to this project");
+    }
 
     const updatedImages = currentImages.filter((id) => id !== storageId);
-    console.log(storageId);
-    console.log(updatedImages);
-    console.log(updatedImages);
 
     await ctx.db.patch(projectId, {
       inspirationImages: updatedImages,

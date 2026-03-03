@@ -120,12 +120,18 @@ export const ConsumeCreditsQuery = async ({ amount }: { amount?: number }) => {
   if (!profile?.id) {
     return { ok: false, balance: 0, profile: null };
   }
+
+  const normalizedAmount = amount ?? 1;
+  if (!Number.isInteger(normalizedAmount) || normalizedAmount <= 0) {
+    throw new Error("amount must be a positive integer");
+  }
+
   const credits = await fetchMutation(
     api.subscription.consumeCredits,
     {
       reason: "ai:generation",
       userId: profile.id as Id<"users">,
-      amount: amount || 1,
+      amount: normalizedAmount,
     },
     {
       token: await convexAuthNextjsToken(),
