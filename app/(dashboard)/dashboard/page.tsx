@@ -1,4 +1,5 @@
 import { SubscriptionEntitlementQuery } from "@/convex/query.config";
+import { preloadedQueryResult } from "convex/nextjs";
 import { redirect } from "next/navigation";
 
 const Dashboard = async () => {
@@ -6,7 +7,7 @@ const Dashboard = async () => {
   if (!profileName) {
     redirect("/login");
   }
-  if (entitlement._valueJSON) {
+  if (!preloadedQueryResult(entitlement)) {
     redirect(`/billing/${profileName}`);
   }
   redirect(`/dashboard/${profileName}`);

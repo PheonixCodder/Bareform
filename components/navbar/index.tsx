@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/store";
 import { CreateProject } from "../buttons/project";
+import Autosave from "../canvas/autosave";
 
 type TabProps = {
   label: string;
@@ -30,6 +31,12 @@ export const Navbar = () => {
     api.projects.getProject,
     projectId ? { projectId: projectId as Id<"projects"> } : "skip",
   );
+
+  const creditBalance = useQuery(
+    api.subscription.getCreditsBalance,
+    me ? { userId: me.id as Id<"users"> } : "skip",
+  );
+
   if (!me) {
     return null;
   }
@@ -94,7 +101,7 @@ export const Navbar = () => {
       {/* Right: Actions */}
       <div className="flex items-center gap-3 justify-end">
         <span className="text-xs text-white/40 inline">
-          TODO: credits
+          {creditBalance} credits
         </span>
         <Button
           variant="secondary"
@@ -108,7 +115,8 @@ export const Navbar = () => {
             <User className="size-5 text-white" />
           </AvatarFallback>
         </Avatar>
-        <CreateProject />
+        {hasCanvas && <Autosave />}
+        {!hasCanvas && !hasStyleGuide && <CreateProject />}
       </div>
     </div>
   );
