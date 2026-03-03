@@ -1,5 +1,7 @@
 import { Navbar } from "@/components/navbar";
 import { SubscriptionEntitlementQuery } from "@/convex/query.config";
+import { preloadedQueryResult } from "convex/nextjs";
+import { redirect } from "next/navigation";
 import React, { Suspense } from "react";
 
 type Props = {
@@ -8,6 +10,9 @@ type Props = {
 
 const Layout = async ({ children }: Props) => {
   const { profileName, entitlement } = await SubscriptionEntitlementQuery();
+  if (!preloadedQueryResult(entitlement!)) {
+    redirect(`/billing/${profileName}`);
+  }
   return (
     <div className="grid grid-cols-1 min-h-screen">
       <Suspense fallback={null}>

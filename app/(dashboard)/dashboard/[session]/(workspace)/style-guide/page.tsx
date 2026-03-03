@@ -8,6 +8,7 @@ import { StyleGuide } from "@/redux/api/slide-guide";
 import { preloadedQueryResult } from "convex/nextjs";
 import { Palette } from "lucide-react";
 import React from "react";
+import { notFound } from "next/navigation";
 
 type Props = {
   searchParams: Promise<{
@@ -17,6 +18,8 @@ type Props = {
 
 const Page = async ({ searchParams }: Props) => {
   const projectId = (await searchParams).project;
+  if (!projectId) notFound();
+
   const existingStyleGuide = await StyleGuideQuery(projectId);
 
   const guide = preloadedQueryResult(
@@ -27,14 +30,15 @@ const Page = async ({ searchParams }: Props) => {
   const typographyGuide = guide?.typographySections || [];
 
   const existingMoodBoardImages = await MoodBoardImagesQuery(projectId);
-  const guideImages = preloadedQueryResult(
-    existingMoodBoardImages.images,
-  ) as unknown as MoodBoardImage[];
+  const guideImages =
+    (preloadedQueryResult(existingMoodBoardImages.images) as unknown as
+      | MoodBoardImage[]
+      | null) ?? [];
 
   return (
     <div>
       <TabsContent value="colors" className="space-y-8">
-        {!guideImages.length ? (
+        {!colorGuide.length ? (
           <div className="space-y-8">
             <div className="text-center py-20">
               <div className="w-16 h-16 mx-auto mb-4 rounded-lg bg-muted flex items-center justify-center">
