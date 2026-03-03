@@ -15,10 +15,14 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 const Billing = async () => {
-    const { profileName, entitlement } = await SubscriptionEntitlementQuery();
-      if (preloadedQueryResult(entitlement!)) {
-        redirect(`/dashboard/${profileName}`);
-      }
+  const { profileName, entitlement } = await SubscriptionEntitlementQuery();
+  if (!entitlement) {
+    redirect("/auth/sign-in");
+  }
+
+  if (preloadedQueryResult(entitlement)) {
+    redirect(`/dashboard/${profileName}`);
+  }
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-lg">
