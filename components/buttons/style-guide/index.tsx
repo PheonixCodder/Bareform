@@ -4,7 +4,7 @@ import { useStyleGuide } from "@/hooks/use-styles";
 import { Loader2, Sparkles } from "lucide-react";
 
 type Props = {
-  images: any[];
+  images: Parameters<typeof useStyleGuide>[1];
   fileInputRef: React.RefObject<HTMLInputElement | null>;
   projectId: string;
 };

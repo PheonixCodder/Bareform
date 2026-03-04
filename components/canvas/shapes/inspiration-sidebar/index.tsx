@@ -14,7 +14,7 @@ type InspirationSidebarProps = {
   onClose: () => void;
 };
 
-type Image = {
+type InspirationImage = {
   id: string;
   file?: File;
   url?: string;
@@ -29,7 +29,7 @@ export const InspirationSidebar = ({
   isOpen,
   onClose,
 }: InspirationSidebarProps) => {
-  const [images, setImages] = useState<Image[]>([]);
+  const [images, setImages] = useState<InspirationImage[]>([]);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams();
@@ -79,7 +79,7 @@ export const InspirationSidebar = ({
   const handleFileSelect = useCallback(
     (files: FileList | null) => {
       if (!files || files.length === 0) return;
-      const newImages: Image[] = Array.from(files || [])
+      const newImages: InspirationImage[] = Array.from(files || [])
         .filter((file) => file.type.startsWith("image/"))
         .slice(0, 6 - images.length) // Limit to 6 total images
         .map((file) => ({
@@ -181,6 +181,11 @@ export const InspirationSidebar = ({
     const image = images.find((img) => img.id === imageId);
     if (!image) return;
 
+    // Revoke blob URL if it exists and is a blob URL
+    if (image.url && image.url.startsWith("blob:")) {
+      URL.revokeObjectURL(image.url);
+    }
+
     if (image.storageId && image.isFromServer && projectId) {
       try {
         await removeInspirationImage({
@@ -199,7 +204,7 @@ export const InspirationSidebar = ({
 
   useEffect(() => {
     if (existingImages && existingImages.length > 0) {
-      const serverImages: Image[] = existingImages.map((img) => ({
+      const serverImages: InspirationImage[] = existingImages.map((img) => ({
         id: img.id,
         storageId: img.storageId,
         url: img.url || undefined,

@@ -18,14 +18,15 @@ const Page = async ({ searchParams }: CanvasPageProps) => {
     );
   }
 
-  const { project, profile } = await ProjectQuery(projectId);
-  if (!profile) {
+  const queryResult = await ProjectQuery(projectId).catch(() => null);
+  if (!queryResult) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        <p className="text-muted-foreground">No Project Selected</p>
+        <p className="text-muted-foreground">Unable to load project</p>
       </div>
     );
   }
+  const { project } = queryResult;
 
   return (
     <ProjectProvider initialProject={project}>

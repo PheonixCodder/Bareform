@@ -45,7 +45,10 @@ const TextSidebar = ({ isOpen }: Props) => {
     "system-ui, sans-serif",
   ];
 
-  const updateTextProperty = (property: keyof TextShape, value: any) => {
+  const updateTextProperty = <K extends keyof TextShape>(
+    property: K,
+    value: TextShape[K],
+  ) => {
     if (!selectedTextShape) return;
 
     dispatch(
