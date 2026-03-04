@@ -181,11 +181,6 @@ export const InspirationSidebar = ({
     const image = images.find((img) => img.id === imageId);
     if (!image) return;
 
-    // Revoke blob URL if it exists and is a blob URL
-    if (image.url && image.url.startsWith("blob:")) {
-      URL.revokeObjectURL(image.url);
-    }
-
     if (image.storageId && image.isFromServer && projectId) {
       try {
         await removeInspirationImage({
